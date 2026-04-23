@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Services;
+namespace App\Infra\Db;
 
 use App\Models\Farm;
 use App\Models\Herd;
 use App\Models\RuralProducer;
 
-class ReportsService
+class ReportDb
 {
-    /**
-     * @return array<string, mixed>
-     */
     public function build(): array
     {
         return [

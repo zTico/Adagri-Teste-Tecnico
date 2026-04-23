@@ -7,22 +7,18 @@ use ZipArchive;
 
 class SimpleXlsxWriter
 {
-    /**
-     * @param list<string> $headers
-     * @param list<list<mixed>> $rows
-     */
     public function create(string $sheetName, array $headers, array $rows): string
     {
         $path = tempnam(sys_get_temp_dir(), 'agri_xlsx_');
 
         if ($path === false) {
-            throw new RuntimeException('Unable to create temporary file for spreadsheet export.');
+            throw new RuntimeException('Nao foi possivel criar o arquivo temporario para exportacao da planilha.');
         }
 
         $zip = new ZipArchive();
 
         if ($zip->open($path, ZipArchive::OVERWRITE) !== true) {
-            throw new RuntimeException('Unable to open spreadsheet archive for writing.');
+            throw new RuntimeException('Nao foi possivel abrir o arquivo da planilha para escrita.');
         }
 
         $zip->addFromString('[Content_Types].xml', $this->contentTypesXml());
@@ -38,10 +34,6 @@ class SimpleXlsxWriter
         return $path;
     }
 
-    /**
-     * @param list<string> $headers
-     * @param list<list<mixed>> $rows
-     */
     private function worksheetXml(array $headers, array $rows): string
     {
         $allRows = array_merge([$headers], $rows);

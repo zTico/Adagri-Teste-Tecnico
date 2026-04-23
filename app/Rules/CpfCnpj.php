@@ -12,13 +12,13 @@ class CpfCnpj implements ValidationRule
         $digits = preg_replace('/\D+/', '', (string) $value);
 
         if (! $digits || ! in_array(strlen($digits), [11, 14], true)) {
-            $fail('The :attribute must be a valid CPF or CNPJ.');
+            $fail('O campo :attribute deve conter um CPF ou CNPJ valido.');
 
             return;
         }
 
         if (preg_match('/^(\d)\1+$/', $digits) === 1) {
-            $fail('The :attribute must be a valid CPF or CNPJ.');
+            $fail('O campo :attribute deve conter um CPF ou CNPJ valido.');
 
             return;
         }
@@ -28,7 +28,7 @@ class CpfCnpj implements ValidationRule
             : $this->isValidCnpj($digits);
 
         if (! $isValid) {
-            $fail('The :attribute must be a valid CPF or CNPJ.');
+            $fail('O campo :attribute deve conter um CPF ou CNPJ valido.');
         }
     }
 
@@ -63,9 +63,6 @@ class CpfCnpj implements ValidationRule
             && $cnpj[13] === (string) $secondDigit;
     }
 
-    /**
-     * @param array<int, int> $weights
-     */
     private function calculateCnpjDigit(string $base, array $weights): int
     {
         $sum = 0;

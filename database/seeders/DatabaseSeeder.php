@@ -24,15 +24,15 @@ class DatabaseSeeder extends Seeder
             'password' => 'password',
         ]);
 
-        RuralProducer::factory(6)->create()->each(function (RuralProducer $producer): void {
-            Farm::factory(random_int(1, 3))
-                ->for($producer)
-                ->create()
-                ->each(function (Farm $farm): void {
-                    Herd::factory(random_int(1, 3))
-                        ->for($farm)
-                        ->create();
-                });
-        });
+        // RuralProducer::factory(6)->create()->each(function (RuralProducer $producer): void {
+        //     Farm::factory(random_int(1, 3))
+        //         ->for($producer)
+        //         ->create()
+        //         ->each(function (Farm $farm): void {
+        //             Herd::factory(random_int(1, 3))
+        //                 ->for($farm)
+        //                 ->create();
+        //         });
+        // });
     }
 }

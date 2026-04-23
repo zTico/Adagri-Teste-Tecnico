@@ -47,6 +47,14 @@ class AuthTest extends TestCase
 
         $response
             ->assertStatus(422)
-            ->assertJsonValidationErrors('email');
+            ->assertJsonValidationErrors('email')
+            ->assertJsonPath('errors.email.0', 'As credenciais informadas sao invalidas.');
+    }
+
+    public function test_protected_route_returns_portuguese_message_when_not_authenticated(): void
+    {
+        $this->getJson('/api/reports')
+            ->assertUnauthorized()
+            ->assertJsonPath('message', 'Nao autenticado.');
     }
 }

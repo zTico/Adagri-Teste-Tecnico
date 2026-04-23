@@ -1,0 +1,50 @@
+<?php
+
+return [
+    'required' => 'O campo :attribute e obrigatorio.',
+    'string' => 'O campo :attribute deve ser um texto.',
+    'email' => 'O campo :attribute deve ser um endereco de e-mail valido.',
+    'integer' => 'O campo :attribute deve ser um numero inteiro.',
+    'numeric' => 'O campo :attribute deve ser um numero.',
+    'exists' => 'O campo :attribute selecionado e invalido.',
+    'unique' => 'O campo :attribute ja esta em uso.',
+    'digits' => 'O campo :attribute deve conter :digits digitos.',
+    'size' => [
+        'string' => 'O campo :attribute deve conter :size caracteres.',
+    ],
+    'max' => [
+        'numeric' => 'O campo :attribute nao pode ser maior que :max.',
+        'string' => 'O campo :attribute nao pode ter mais que :max caracteres.',
+    ],
+    'min' => [
+        'numeric' => 'O campo :attribute deve ser no minimo :min.',
+        'string' => 'O campo :attribute deve ter pelo menos :min caracteres.',
+    ],
+    'gt' => [
+        'numeric' => 'O campo :attribute deve ser maior que :value.',
+    ],
+    'in' => 'O campo :attribute selecionado e invalido.',
+    'attributes' => [
+        'city' => 'cidade',
+        'complement' => 'complemento',
+        'cpf_cnpj' => 'CPF/CNPJ',
+        'district' => 'bairro',
+        'email' => 'e-mail',
+        'farm_id' => 'fazenda',
+        'name' => 'nome',
+        'number' => 'numero',
+        'password' => 'senha',
+        'per_page' => 'itens por pagina',
+        'phone' => 'telefone',
+        'postal_code' => 'CEP',
+        'purpose' => 'finalidade',
+        'quantity' => 'quantidade',
+        'rural_producer_id' => 'produtor rural',
+        'search' => 'busca',
+        'species' => 'especie',
+        'state' => 'estado',
+        'state_registration' => 'inscricao estadual',
+        'street' => 'logradouro',
+        'total_area' => 'area total',
+    ],
+];

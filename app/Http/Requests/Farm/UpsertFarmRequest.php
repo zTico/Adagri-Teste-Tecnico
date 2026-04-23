@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Farm;
 
-use App\Support\DataNormalizer;
+use App\Domain\Shared\DataNormalizer;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -13,9 +13,6 @@ class UpsertFarmRequest extends FormRequest
         return true;
     }
 
-    /**
-     * @return array<string, mixed>
-     */
     public function rules(): array
     {
         $farmId = $this->route('farm')?->id;

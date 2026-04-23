@@ -8,16 +8,10 @@ use App\Models\Farm;
 use App\Models\Herd;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends Factory<Herd>
- */
 class HerdFactory extends Factory
 {
     protected $model = Herd::class;
 
-    /**
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [

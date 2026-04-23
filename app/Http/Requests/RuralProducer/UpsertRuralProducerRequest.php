@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\RuralProducer;
 
+use App\Domain\Shared\DataNormalizer;
 use App\Rules\CpfCnpj;
-use App\Support\DataNormalizer;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -14,9 +14,6 @@ class UpsertRuralProducerRequest extends FormRequest
         return true;
     }
 
-    /**
-     * @return array<string, mixed>
-     */
     public function rules(): array
     {
         $producerId = $this->route('rural_producer')?->id;

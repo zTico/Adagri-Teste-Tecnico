@@ -19,7 +19,7 @@ class AuthController extends Controller
 
         if (! $user || ! Hash::check($request->validated('password'), $user->password)) {
             throw ValidationException::withMessages([
-                'email' => ['The provided credentials are invalid.'],
+                'email' => ['As credenciais informadas sao invalidas.'],
             ]);
         }
 
@@ -36,7 +36,7 @@ class AuthController extends Controller
         $request->user()?->currentAccessToken()?->delete();
 
         return response()->json([
-            'message' => 'Logged out successfully.',
+            'message' => 'Logout realizado com sucesso.',
         ]);
     }
 }

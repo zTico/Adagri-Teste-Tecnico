@@ -27,9 +27,11 @@ Teste tecnico full stack para um sistema de gestao agropecuaria construido com L
 
 ## Decisoes de Arquitetura
 
-- Os controllers foram mantidos enxutos e delegam regras de negocio e persistencia para services.
+- O backend foi organizado em camadas mais pragmáticas:
+  - `domain` para regras e contratos simples do fluxo
+  - `infra/db` para queries e persistencia com Eloquent
+- Os controllers foram mantidos enxutos e fazem apenas orquestracao de request, autorizacao e resposta.
 - As validacoes ficam em form requests dedicados.
-- Os filtros de listagem ficam separados de controllers e models para manter as regras explicitas.
 - A aplicacao opera com fila em modo `sync` enquanto nao existir caso de uso assincrono real, evitando worker e tabelas de jobs sem necessidade.
 - A autorizacao usa policies do Laravel com uma regra direta:
   - `admin`: acesso total
@@ -275,5 +277,5 @@ A suite de testes cobre:
 
 - O codigo da aplicacao continua em ingles, conforme o requisito original.
 - Os textos visiveis de interface e documentacao foram adaptados para portugues.
-- A consulta de CEP foi isolada em um service proprio.
+- A consulta de CEP foi isolada entre um fluxo de dominio e um gateway de infraestrutura.
 - O frontend consome a API REST diretamente com tokens do Sanctum.

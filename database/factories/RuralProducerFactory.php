@@ -5,16 +5,10 @@ namespace Database\Factories;
 use App\Models\RuralProducer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends Factory<RuralProducer>
- */
 class RuralProducerFactory extends Factory
 {
     protected $model = RuralProducer::class;
 
-    /**
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
@@ -46,9 +40,6 @@ class RuralProducerFactory extends Factory
         return implode('', $numbers);
     }
 
-    /**
-     * @param array<int, int> $numbers
-     */
     private function cpfDigit(array $numbers, int $factor): int
     {
         $sum = 0;

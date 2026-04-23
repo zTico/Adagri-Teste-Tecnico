@@ -6,16 +6,10 @@ use App\Models\Farm;
 use App\Models\RuralProducer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends Factory<Farm>
- */
 class FarmFactory extends Factory
 {
     protected $model = Farm::class;
 
-    /**
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [

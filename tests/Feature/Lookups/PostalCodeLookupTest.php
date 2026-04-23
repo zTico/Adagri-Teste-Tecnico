@@ -36,4 +36,14 @@ class PostalCodeLookupTest extends TestCase
                 'state' => 'GO',
             ]);
     }
+
+    public function test_postal_code_lookup_returns_portuguese_message_for_invalid_postal_code(): void
+    {
+        Sanctum::actingAs(User::factory()->viewer()->create());
+
+        $this->getJson('/api/lookups/postal-code/123')
+            ->assertStatus(422)
+            ->assertJsonPath('message', 'O CEP deve conter 8 digitos.')
+            ->assertJsonPath('errors.postal_code.0', 'O CEP deve conter 8 digitos.');
+    }
 }

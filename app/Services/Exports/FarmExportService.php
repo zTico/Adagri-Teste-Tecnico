@@ -2,33 +2,23 @@
 
 namespace App\Services\Exports;
 
+use App\Domain\Farms\FarmFilters;
+use App\Infra\Db\FarmDb;
 use App\Models\Farm;
-use App\QueryFilters\FarmFilters;
 use App\Support\Exports\SimpleXlsxWriter;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class FarmExportService
 {
     public function __construct(
+        private readonly FarmDb $farms,
         private readonly SimpleXlsxWriter $writer,
     ) {
     }
 
-    /**
-     * @param array<string, mixed> $filters
-     */
     public function export(array $filters): BinaryFileResponse
     {
-        $farms = (new FarmFilters($filters))
-            ->apply(
-                Farm::query()
-                    ->with(['ruralProducer:id,name'])
-                    ->withCount('herds')
-                    ->withSum('herds as total_animals', 'quantity')
-                    ->orderBy('name')
-            )
-            ->get()
-        ;
+        $farms = $this->farms->allForExport(new FarmFilters($filters));
 
         $rows = $farms->map(fn (Farm $farm): array => [
             $farm->name,
