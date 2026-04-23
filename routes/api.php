@@ -1,0 +1,36 @@
+<?php
+
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ExportController;
+use App\Http\Controllers\Api\FarmController;
+use App\Http\Controllers\Api\HerdController;
+use App\Http\Controllers\Api\LookupController;
+use App\Http\Controllers\Api\ReportController;
+use App\Http\Controllers\Api\RuralProducerController;
+use Illuminate\Support\Facades\Route;
+
+Route::prefix('auth')->group(function (): void {
+    Route::post('/login', [AuthController::class, 'login']);
+});
+
+Route::middleware('auth:sanctum')->group(function (): void {
+    Route::prefix('auth')->group(function (): void {
+        Route::post('/logout', [AuthController::class, 'logout']);
+    });
+
+    Route::prefix('lookups')->group(function (): void {
+        Route::get('/options', [LookupController::class, 'options']);
+        Route::get('/postal-code/{postalCode}', [LookupController::class, 'postalCode']);
+    });
+
+    Route::get('/reports', ReportController::class);
+
+    Route::prefix('exports')->group(function (): void {
+        Route::get('/farms', [ExportController::class, 'farms']);
+        Route::get('/rural-producers/{rural_producer}/herds-pdf', [ExportController::class, 'producerHerds']);
+    });
+
+    Route::apiResource('rural-producers', RuralProducerController::class);
+    Route::apiResource('farms', FarmController::class);
+    Route::apiResource('herds', HerdController::class);
+});
