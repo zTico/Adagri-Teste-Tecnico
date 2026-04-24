@@ -30,7 +30,7 @@ onMounted(fetchReports);
 <template>
     <section class="page-section">
         <PageHeader
-            title="Visao Geral dos Relatorios"
+            title="Visão Geral dos Relatórios"
             description="Um resumo operacional rapido sobre produtores, fazendas e composicao dos rebanhos."
         />
 

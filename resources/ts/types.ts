@@ -87,11 +87,24 @@ export interface PaginatedResponse<T> {
     };
 }
 
+export interface ResourceResponse<T> {
+    data: T;
+}
+
 export interface LookupPayload {
     species: OptionItem[];
     purposes: OptionItem[];
     rural_producers: LookupEntity[];
     farms: LookupEntity[];
+}
+
+export interface PostalCodeLookupPayload {
+    postal_code: string;
+    street: string | null;
+    complement: string | null;
+    district: string | null;
+    city: string | null;
+    state: string | null;
 }
 
 export interface ReportsPayload {

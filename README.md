@@ -169,7 +169,7 @@ Verifique se os servicos `app`, `web`, `db` e `node` estao em execucao e tente n
 - Administrador
   - email: `admin@agro.test`
   - senha: `password`
-- Visualizador
+- Usuário
   - email: `viewer@agro.test`
   - senha: `password`
 

@@ -3,7 +3,7 @@ import { computed, onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import PageHeader from '@/components/PageHeader.vue';
 import { api, extractApiError } from '@/lib/api';
-import type { ApiValidationError, Herd, LookupPayload } from '@/types';
+import type { ApiValidationError, Herd, LookupPayload, ResourceResponse } from '@/types';
 
 const route = useRoute();
 const router = useRouter();
@@ -32,11 +32,13 @@ async function fetchHerd(): Promise<void> {
     loading.value = true;
 
     try {
-        const { data } = await api.get<Herd>(`/herds/${route.params.id}`);
-        form.species = data.species;
-        form.quantity = data.quantity;
-        form.purpose = data.purpose;
-        form.farm_id = String(data.farm?.id ?? '');
+        const response = await api.get<ResourceResponse<Herd>>(`/herds/${route.params.id}`);
+        const herd = response.data.data;
+
+        form.species = herd.species;
+        form.quantity = herd.quantity;
+        form.purpose = herd.purpose;
+        form.farm_id = String(herd.farm?.id ?? '');
     } catch (error) {
         errorMessage.value = extractApiError(error).message;
     } finally {

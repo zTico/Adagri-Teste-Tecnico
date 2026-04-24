@@ -1,29 +1,29 @@
 <?php
 
 return [
-    'required' => 'O campo :attribute e obrigatorio.',
-    'string' => 'O campo :attribute deve ser um texto.',
-    'email' => 'O campo :attribute deve ser um endereco de e-mail valido.',
-    'integer' => 'O campo :attribute deve ser um numero inteiro.',
-    'numeric' => 'O campo :attribute deve ser um numero.',
-    'exists' => 'O campo :attribute selecionado e invalido.',
-    'unique' => 'O campo :attribute ja esta em uso.',
-    'digits' => 'O campo :attribute deve conter :digits digitos.',
+    'required' => 'O campo :attribute e obrigatorio',
+    'string' => 'O campo :attribute deve ser um texto',
+    'email' => 'O campo :attribute deve ser um endereco de e-mail valido',
+    'integer' => 'O campo :attribute deve ser um numero inteiro',
+    'numeric' => 'O campo :attribute deve ser um numero',
+    'exists' => 'O campo :attribute selecionado e invalido',
+    'unique' => 'O campo :attribute ja esta cadastrado',
+    'digits' => 'O campo :attribute deve conter :digits digitos',
     'size' => [
-        'string' => 'O campo :attribute deve conter :size caracteres.',
+        'string' => 'O campo :attribute deve conter :size caracteres',
     ],
     'max' => [
-        'numeric' => 'O campo :attribute nao pode ser maior que :max.',
-        'string' => 'O campo :attribute nao pode ter mais que :max caracteres.',
+        'numeric' => 'O campo :attribute nao pode ser maior que :max',
+        'string' => 'O campo :attribute nao pode ter mais que :max caracteres',
     ],
     'min' => [
-        'numeric' => 'O campo :attribute deve ser no minimo :min.',
-        'string' => 'O campo :attribute deve ter pelo menos :min caracteres.',
+        'numeric' => 'O campo :attribute deve ser no minimo :min',
+        'string' => 'O campo :attribute deve ter pelo menos :min caracteres',
     ],
     'gt' => [
-        'numeric' => 'O campo :attribute deve ser maior que :value.',
+        'numeric' => 'O campo :attribute deve ser maior que :value',
     ],
-    'in' => 'O campo :attribute selecionado e invalido.',
+    'in' => 'O campo :attribute selecionado e invalido',
     'attributes' => [
         'city' => 'cidade',
         'complement' => 'complemento',

@@ -3,7 +3,8 @@ import { computed, onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import PageHeader from '@/components/PageHeader.vue';
 import { api, extractApiError } from '@/lib/api';
-import type { ApiValidationError, RuralProducer } from '@/types';
+import { maskCpfCnpj, maskPhone, maskPostalCode } from '@/lib/formatters';
+import type { ApiValidationError, PostalCodeLookupPayload, ResourceResponse, RuralProducer } from '@/types';
 
 const route = useRoute();
 const router = useRouter();
@@ -12,6 +13,7 @@ const loading = ref(false);
 const lookupLoading = ref(false);
 const errorMessage = ref('');
 const formErrors = ref<Record<string, string[]>>({});
+const lastLookedUpPostalCode = ref('');
 const form = reactive({
     name: '',
     cpf_cnpj: '',
@@ -34,18 +36,21 @@ async function fetchProducer(): Promise<void> {
     loading.value = true;
 
     try {
-        const { data } = await api.get<RuralProducer>(`/rural-producers/${route.params.id}`);
-        form.name = data.name;
-        form.cpf_cnpj = data.cpf_cnpj;
-        form.phone = data.phone ?? '';
-        form.email = data.email ?? '';
-        form.postal_code = data.address.postal_code;
-        form.street = data.address.street;
-        form.number = data.address.number;
-        form.complement = data.address.complement ?? '';
-        form.district = data.address.district ?? '';
-        form.city = data.address.city;
-        form.state = data.address.state;
+        const response = await api.get<ResourceResponse<RuralProducer>>(`/rural-producers/${route.params.id}`);
+        const producer = response.data.data;
+
+        form.name = producer.name;
+        form.cpf_cnpj = maskCpfCnpj(producer.cpf_cnpj);
+        form.phone = maskPhone(producer.phone);
+        form.email = producer.email ?? '';
+        form.postal_code = maskPostalCode(producer.address.postal_code);
+        form.street = producer.address.street;
+        form.number = producer.address.number;
+        form.complement = producer.address.complement ?? '';
+        form.district = producer.address.district ?? '';
+        form.city = producer.address.city;
+        form.state = producer.address.state;
+        lastLookedUpPostalCode.value = producer.address.postal_code;
     } catch (error) {
         errorMessage.value = extractApiError(error).message;
     } finally {
@@ -54,24 +59,49 @@ async function fetchProducer(): Promise<void> {
 }
 
 async function lookupPostalCode(): Promise<void> {
-    if (!form.postal_code) {
+    const postalCode = form.postal_code.replace(/\D/g, '');
+
+    if (postalCode.length !== 8 || postalCode === lastLookedUpPostalCode.value) {
         return;
     }
 
     lookupLoading.value = true;
+    errorMessage.value = '';
 
     try {
-        const { data } = await api.get(`/lookups/postal-code/${form.postal_code}`);
+        const { data } = await api.get<PostalCodeLookupPayload>(`/lookups/postal-code/${postalCode}`);
         form.street = data.street ?? form.street;
-        form.complement = data.complement ?? form.complement;
         form.district = data.district ?? form.district;
         form.city = data.city ?? form.city;
         form.state = data.state ?? form.state;
+        lastLookedUpPostalCode.value = postalCode;
     } catch (error) {
         errorMessage.value = extractApiError(error).message;
     } finally {
         lookupLoading.value = false;
     }
+}
+
+function handleCpfCnpjInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    form.cpf_cnpj = maskCpfCnpj(input.value);
+}
+
+function handlePostalCodeInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    form.postal_code = maskPostalCode(input.value);
+
+    if (form.postal_code.replace(/\D/g, '').length === 8) {
+        void lookupPostalCode();
+    }
+}
+
+function handlePhoneInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    form.phone = maskPhone(input.value);
 }
 
 async function submit(): Promise<void> {
@@ -114,12 +144,23 @@ onMounted(fetchProducer);
             </label>
             <label class="field">
                 <span>CPF / CNPJ</span>
-                <input v-model="form.cpf_cnpj" required />
+                <input
+                    :value="form.cpf_cnpj"
+                    inputmode="numeric"
+                    maxlength="18"
+                    required
+                    @input="handleCpfCnpjInput"
+                />
                 <small>{{ formErrors.cpf_cnpj?.[0] }}</small>
             </label>
             <label class="field">
                 <span>Telefone</span>
-                <input v-model="form.phone" />
+                <input
+                    :value="form.phone"
+                    inputmode="numeric"
+                    maxlength="15"
+                    @input="handlePhoneInput"
+                />
                 <small>{{ formErrors.phone?.[0] }}</small>
             </label>
             <label class="field">
@@ -129,12 +170,13 @@ onMounted(fetchProducer);
             </label>
             <label class="field">
                 <span>CEP</span>
-                <div class="inline-field">
-                    <input v-model="form.postal_code" required />
-                    <button class="ghost-button" type="button" @click="lookupPostalCode">
-                        {{ lookupLoading ? 'Buscando...' : 'Buscar CEP' }}
-                    </button>
-                </div>
+                <input
+                    :value="form.postal_code"
+                    inputmode="numeric"
+                    maxlength="9"
+                    required
+                    @input="handlePostalCodeInput"
+                />
                 <small>{{ formErrors.postal_code?.[0] }}</small>
             </label>
             <label class="field">
@@ -169,6 +211,7 @@ onMounted(fetchProducer);
             </label>
 
             <p v-if="errorMessage" class="form-error full-span">{{ errorMessage }}</p>
+            <p v-else-if="lookupLoading" class="muted-card full-span">Buscando endereco pelo CEP...</p>
 
             <div class="form-actions full-span">
                 <button class="ghost-button" type="button" @click="router.push({ name: 'rural-producers' })">

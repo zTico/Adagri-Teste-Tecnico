@@ -34,7 +34,8 @@ class FarmController extends Controller
 
         return (new FarmResource($this->farms->findForResource($farm->id)))
             ->response()
-            ->setStatusCode(201);
+            ->setStatusCode(201)
+        ;
     }
 
     public function show(Farm $farm): FarmResource

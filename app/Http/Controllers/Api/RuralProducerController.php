@@ -34,19 +34,34 @@ class RuralProducerController extends Controller
 
         return (new RuralProducerResource($this->producers->findForResource($producer->id)))
             ->response()
-            ->setStatusCode(201);
+            ->setStatusCode(201)
+        ;
     }
 
     public function show(RuralProducer $ruralProducer): RuralProducerResource
     {
-        return new RuralProducerResource($this->producers->findForResource($ruralProducer->id));
+        return new RuralProducerResource(
+            $this->
+            producers->
+            findForResource($ruralProducer->id)
+        );
     }
 
     public function update(UpsertRuralProducerRequest $request, RuralProducer $ruralProducer): RuralProducerResource
     {
-        $producer = $this->producers->update($ruralProducer, $request->validated());
+        $producer = $this
+            ->producers
+            ->update(
+                $ruralProducer,
+                $request->validated()
+            )
+        ;
 
-        return new RuralProducerResource($this->producers->findForResource($producer->id));
+        return new RuralProducerResource(
+            $this->
+            producers->
+            findForResource($producer->id)
+        );
     }
 
     public function destroy(RuralProducer $ruralProducer): Response

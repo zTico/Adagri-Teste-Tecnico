@@ -3,7 +3,7 @@ import { computed, onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import PageHeader from '@/components/PageHeader.vue';
 import { api, extractApiError } from '@/lib/api';
-import type { ApiValidationError, Farm, LookupPayload } from '@/types';
+import type { ApiValidationError, Farm, LookupPayload, ResourceResponse } from '@/types';
 
 const route = useRoute();
 const router = useRouter();
@@ -34,13 +34,15 @@ async function fetchFarm(): Promise<void> {
     loading.value = true;
 
     try {
-        const { data } = await api.get<Farm>(`/farms/${route.params.id}`);
-        form.name = data.name;
-        form.city = data.city;
-        form.state = data.state;
-        form.state_registration = data.state_registration ?? '';
-        form.total_area = data.total_area;
-        form.rural_producer_id = String(data.rural_producer?.id ?? '');
+        const response = await api.get<ResourceResponse<Farm>>(`/farms/${route.params.id}`);
+        const farm = response.data.data;
+
+        form.name = farm.name;
+        form.city = farm.city;
+        form.state = farm.state;
+        form.state_registration = farm.state_registration ?? '';
+        form.total_area = farm.total_area;
+        form.rural_producer_id = String(farm.rural_producer?.id ?? '');
     } catch (error) {
         errorMessage.value = extractApiError(error).message;
     } finally {

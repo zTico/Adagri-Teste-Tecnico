@@ -34,7 +34,8 @@ class HerdController extends Controller
 
         return (new HerdResource($this->herds->findForResource($herd->id)))
             ->response()
-            ->setStatusCode(201);
+            ->setStatusCode(201)
+        ;
     }
 
     public function show(Herd $herd): HerdResource

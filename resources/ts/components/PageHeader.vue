@@ -8,7 +8,7 @@ defineProps<{
 <template>
     <header class="page-header">
         <div>
-            <p class="page-eyebrow">Sistema de Gestao Agropecuaria</p>
+            <p class="page-eyebrow">Painel Adagri</p>
             <h1>{{ title }}</h1>
             <p v-if="description" class="page-description">{{ description }}</p>
         </div>
