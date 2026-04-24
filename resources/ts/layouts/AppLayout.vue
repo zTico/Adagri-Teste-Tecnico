@@ -47,10 +47,6 @@ async function handleLogout(): Promise<void> {
                 </RouterLink>
 
                 <div class="topbar-actions">
-                    <div class="user-summary">
-                        <p class="page-eyebrow">Perfil ativo</p>
-                        <strong>{{ roleLabel }}</strong>
-                    </div>
                     <button class="ghost-button" @click="handleLogout">Sair</button>
                 </div>
             </header>
