@@ -10,8 +10,8 @@ const loading = ref(false);
 const errorMessage = ref('');
 const logoUrl = `${import.meta.env.BASE_URL}adagri-logo.png`;
 const form = reactive({
-    email: 'admin@agro.test',
-    password: 'password',
+    email: '',
+    password: '',
 });
 
 async function submit(): Promise<void> {
@@ -46,12 +46,12 @@ async function submit(): Promise<void> {
 
                 <label class="field">
                     <span>Email</span>
-                    <input v-model="form.email" type="email" required />
+                    <input v-model.trim="form.email" type="email" autocomplete="email" required />
                 </label>
 
                 <label class="field">
                     <span>Senha</span>
-                    <input v-model="form.password" type="password" required />
+                    <input v-model="form.password" type="password" autocomplete="current-password" required />
                 </label>
 
                 <p v-if="errorMessage" class="form-error">{{ errorMessage }}</p>
