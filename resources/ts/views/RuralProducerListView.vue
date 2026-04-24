@@ -3,8 +3,8 @@ import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import PageHeader from '@/components/PageHeader.vue';
 import PaginationBar from '@/components/PaginationBar.vue';
-import { api, compactParams, downloadFile, extractApiError } from '@/lib/api';
-import { formatCpfCnpj, formatPhone, formatPostalCode } from '@/lib/formatters';
+import { api, compactParams, extractApiError } from '@/lib/api';
+import { formatCpfCnpj } from '@/lib/formatters';
 import { useAuthStore } from '@/stores/auth';
 import type { LookupPayload, PaginatedResponse, RuralProducer } from '@/types';
 
@@ -61,10 +61,6 @@ async function removeProducer(id: number): Promise<void> {
 
     await api.delete(`/rural-producers/${id}`);
     await fetchProducers();
-}
-
-async function exportProducerHerds(id: number): Promise<void> {
-    await downloadFile(`/exports/rural-producers/${id}/herds-pdf`, `produtor-${id}-rebanhos.pdf`);
 }
 
 function scheduleFilter(): void {
@@ -145,8 +141,6 @@ onMounted(async () => {
                         <tr>
                             <th>Nome</th>
                             <th>Documento</th>
-                            <th>Contato</th>
-                            <th>Endereço</th>
                             <th>Fazendas</th>
                             <th>Ações</th>
                         </tr>
@@ -155,35 +149,41 @@ onMounted(async () => {
                         <tr v-for="producer in producers.data" :key="producer.id">
                             <td>
                                 <strong>{{ producer.name }}</strong>
-                                <p class="table-subtitle">{{ producer.email ?? 'Sem email' }}</p>
                             </td>
                             <td>{{ formatCpfCnpj(producer.cpf_cnpj) }}</td>
-                            <td>{{ formatPhone(producer.phone) }}</td>
-                            <td>
-                                {{ producer.address.city }}, {{ producer.address.state }}
-                                <p class="table-subtitle">
-                                    {{ producer.address.street }}, {{ producer.address.number }} ·
-                                    {{ formatPostalCode(producer.address.postal_code) }}
-                                </p>
-                            </td>
                             <td>{{ producer.farms_count ?? 0 }}</td>
                             <td class="actions-cell">
-                                <button class="ghost-button" @click="exportProducerHerds(producer.id)">
-                                    PDF
+                                <button
+                                    class="icon-button"
+                                    title="Ver detalhes"
+                                    aria-label="Ver detalhes"
+                                    @click="router.push({ name: 'rural-producers-show', params: { id: producer.id } })"
+                                >
+                                    <svg aria-hidden="true" viewBox="0 0 24 24">
+                                        <path d="M12 5c5 0 8.5 4.1 9.7 6.4.2.4.2.8 0 1.2C20.5 14.9 17 19 12 19s-8.5-4.1-9.7-6.4a1.3 1.3 0 0 1 0-1.2C3.5 9.1 7 5 12 5Zm0 2C8.2 7 5.4 10 4.4 12c1 2 3.8 5 7.6 5s6.6-3 7.6-5C18.6 10 15.8 7 12 7Zm0 2.2a2.8 2.8 0 1 1 0 5.6 2.8 2.8 0 0 1 0-5.6Z" />
+                                    </svg>
                                 </button>
                                 <button
                                     v-if="authStore.isAdmin"
-                                    class="ghost-button"
+                                    class="icon-button"
+                                    title="Editar"
+                                    aria-label="Editar"
                                     @click="router.push({ name: 'rural-producers-edit', params: { id: producer.id } })"
                                 >
-                                    Editar
+                                    <svg aria-hidden="true" viewBox="0 0 24 24">
+                                        <path d="M4 17.3V20h2.7L17.9 8.8l-2.7-2.7L4 17.3ZM19.7 7a1 1 0 0 0 0-1.4l-1.3-1.3a1 1 0 0 0-1.4 0l-1 1L18.7 8l1-1Z" />
+                                    </svg>
                                 </button>
                                 <button
                                     v-if="authStore.isAdmin"
-                                    class="danger-button"
+                                    class="icon-button danger-icon-button"
+                                    title="Excluir"
+                                    aria-label="Excluir"
                                     @click="removeProducer(producer.id)"
                                 >
-                                    Excluir
+                                    <svg aria-hidden="true" viewBox="0 0 24 24">
+                                        <path d="M8 4h8l1 2h4v2H3V6h4l1-2Zm1 6h2v8H9v-8Zm4 0h2v8h-2v-8Zm4 0h2v8h-2v-8ZM6 10h2l1 10h6l1-10h2l-1.2 11.1A1 1 0 0 1 15.8 22H8.2a1 1 0 0 1-1-.9L6 10Z" />
+                                    </svg>
                                 </button>
                             </td>
                         </tr>

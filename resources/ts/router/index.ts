@@ -32,6 +32,12 @@ const routes = [
                 meta: { title: 'Novo Produtor' },
             },
             {
+                path: 'rural-producers/:id',
+                name: 'rural-producers-show',
+                component: () => import('@/views/RuralProducerDetailView.vue'),
+                meta: { title: 'Detalhes do Produtor' },
+            },
+            {
                 path: 'rural-producers/:id/edit',
                 name: 'rural-producers-edit',
                 component: () => import('@/views/RuralProducerFormView.vue'),

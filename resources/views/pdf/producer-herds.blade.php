@@ -75,7 +75,7 @@
                                 <td>{{ $herd['species'] ?? '-' }}</td>
                                 <td>{{ $herd['purpose'] ?? '-' }}</td>
                                 <td>{{ $herd['quantity'] }}</td>
-                                <td>{{ $herd['updated_at'] ? $herd['updated_at']->format('d-m-Y H:i') : '-' }}</td>
+                                <td>{{ $herd['updated_at'] ?? '-' }}</td>
                             </tr>
                         @empty
                             <tr>

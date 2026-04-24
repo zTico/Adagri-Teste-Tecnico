@@ -38,7 +38,9 @@ export interface RuralProducer {
         city: string;
         state: string;
     };
+    farms?: Farm[];
     created_at: string;
+    updated_at?: string;
 }
 
 export interface Farm {
@@ -54,6 +56,9 @@ export interface Farm {
         id: number;
         name: string;
     } | null;
+    herds?: Herd[];
+    created_at?: string;
+    updated_at?: string;
 }
 
 export interface Herd {

@@ -19,7 +19,7 @@ class ProducerHerdPdfExportService
                     'species' => $herd->species?->label(),
                     'purpose' => $herd->purpose?->label(),
                     'quantity' => $herd->quantity,
-                    'updated_at' => $herd->updated_at?->format('Y-m-d H:i'),
+                    'updated_at' => $herd->updated_at?->format('d-m-Y H:i'),
                 ])->all();
 
                 return [
