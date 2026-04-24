@@ -21,6 +21,8 @@ Route::middleware('auth:sanctum')->group(function (): void {
 
     Route::prefix('lookups')->group(function (): void {
         Route::get('/options', [LookupController::class, 'options']);
+        Route::get('/brazil-states', [LookupController::class, 'brazilStates']);
+        Route::get('/brazil-states/{state}/cities', [LookupController::class, 'brazilCities']);
         Route::get('/postal-code/{postalCode}', [LookupController::class, 'postalCode']);
     });
 

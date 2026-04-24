@@ -39,6 +39,46 @@ class PostalCodeLookupTest extends TestCase
         ;
     }
 
+    public function test_brazil_states_lookup_returns_ibge_state_options(): void
+    {
+        Sanctum::actingAs(User::factory()->viewer()->create());
+
+        Http::fake([
+            'https://servicodados.ibge.gov.br/api/v1/localidades/estados*' => Http::response([
+                ['nome' => 'Goias', 'sigla' => 'GO'],
+                ['nome' => 'Sao Paulo', 'sigla' => 'SP'],
+            ]),
+        ]);
+
+        $this->getJson('/api/lookups/brazil-states')
+            ->assertOk()
+            ->assertJsonPath('0.label', 'Goias')
+            ->assertJsonPath('0.value', 'GO')
+            ->assertJsonPath('1.label', 'Sao Paulo')
+            ->assertJsonPath('1.value', 'SP')
+        ;
+    }
+
+    public function test_brazil_cities_lookup_returns_ibge_city_options(): void
+    {
+        Sanctum::actingAs(User::factory()->viewer()->create());
+
+        Http::fake([
+            'https://servicodados.ibge.gov.br/api/v1/localidades/estados/GO/municipios*' => Http::response([
+                ['nome' => 'Anapolis'],
+                ['nome' => 'Goiania'],
+            ]),
+        ]);
+
+        $this->getJson('/api/lookups/brazil-states/GO/cities')
+            ->assertOk()
+            ->assertJsonPath('0.label', 'Anapolis')
+            ->assertJsonPath('0.value', 'Anapolis')
+            ->assertJsonPath('1.label', 'Goiania')
+            ->assertJsonPath('1.value', 'Goiania')
+        ;
+    }
+
     public function test_postal_code_lookup_uses_external_service_and_returns_normalized_data(): void
     {
         Sanctum::actingAs(User::factory()->viewer()->create());
