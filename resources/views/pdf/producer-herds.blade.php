@@ -62,7 +62,7 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Especie</th>
+                            <th>Espécie</th>
                             <th>Finalidade</th>
                             <th>Quantidade</th>
                             <th>Atualizado em</th>

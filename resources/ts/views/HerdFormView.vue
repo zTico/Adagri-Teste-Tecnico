@@ -77,7 +77,7 @@ onMounted(async () => {
     <section class="page-section">
         <PageHeader
             :title="isEditing ? 'Editar Rebanho' : 'Cadastrar Rebanho'"
-            description="Informe finalidade produtiva e quantidade com especies padronizadas."
+            description="Informe finalidade produtiva e quantidade com espécies padronizadas."
         />
 
         <form class="panel-card form-grid-2" @submit.prevent="submit">
@@ -92,9 +92,9 @@ onMounted(async () => {
                 <small>{{ formErrors.farm_id?.[0] }}</small>
             </label>
             <label class="field">
-                <span>Especie</span>
+                <span>Espécie</span>
                 <select v-model="form.species" required>
-                    <option value="">Selecione uma especie</option>
+                    <option value="">Selecione uma espécie</option>
                     <option v-for="species in lookups?.species ?? []" :key="species.value" :value="species.value">
                         {{ species.label }}
                     </option>
@@ -112,7 +112,7 @@ onMounted(async () => {
                 <small>{{ formErrors.purpose?.[0] }}</small>
             </label>
             <label class="field">
-                <span>Quantity</span>
+                <span>Quantidade</span>
                 <input v-model.number="form.quantity" min="1" type="number" required />
                 <small>{{ formErrors.quantity?.[0] }}</small>
             </label>

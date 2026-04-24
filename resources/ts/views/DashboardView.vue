@@ -31,11 +31,11 @@ onMounted(fetchReports);
     <section class="page-section">
         <PageHeader
             title="Visão Geral dos Relatórios"
-            description="Um resumo operacional rapido sobre produtores, fazendas e composicao dos rebanhos."
+            description="Um resumo operacional rápido sobre produtores, fazendas e composição dos rebanhos."
         />
 
         <p v-if="errorMessage" class="form-error">{{ errorMessage }}</p>
-        <p v-else-if="loading" class="panel-card muted-card">Carregando relatorios...</p>
+        <p v-else-if="loading" class="panel-card muted-card">Carregando relatórios...</p>
 
         <template v-else-if="reports">
             <div class="stats-grid">
@@ -56,7 +56,7 @@ onMounted(fetchReports);
                 </article>
 
                 <article class="panel-card">
-                    <h2>Animais por especie</h2>
+                    <h2>Animais por espécie</h2>
                     <ul class="metric-list">
                         <li v-for="item in reports.animals_by_species" :key="item.species">
                             <span>{{ formatEnumLabel(item.species) }}</span>

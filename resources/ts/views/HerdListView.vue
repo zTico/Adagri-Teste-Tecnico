@@ -68,7 +68,7 @@ onMounted(async () => {
     <section class="page-section">
         <PageHeader
             title="Rebanhos"
-            description="Acompanhe especies, quantidades e finalidades produtivas em cada fazenda."
+            description="Acompanhe espécies, quantidades e finalidades produtivas em cada fazenda."
         >
             <button
                 v-if="authStore.isAdmin"
@@ -85,9 +85,9 @@ onMounted(async () => {
                 <input v-model="filters.search" placeholder="Nome da fazenda" />
             </label>
             <label class="field">
-                <span>Especie</span>
+                <span>Espécie</span>
                 <select v-model="filters.species">
-                    <option value="">Todas as especies</option>
+                    <option value="">Todas as espécies</option>
                     <option v-for="species in lookups?.species ?? []" :key="species.value" :value="species.value">
                         {{ species.label }}
                     </option>
@@ -135,13 +135,13 @@ onMounted(async () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>Especie</th>
+                            <th>Espécie</th>
                             <th>Finalidade</th>
                             <th>Quantidade</th>
                             <th>Fazenda</th>
                             <th>Produtor</th>
                             <th>Atualizado em</th>
-                            <th>Acoes</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>

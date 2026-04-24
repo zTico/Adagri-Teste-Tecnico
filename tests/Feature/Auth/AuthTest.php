@@ -51,6 +51,26 @@ class AuthTest extends TestCase
             ->assertJsonPath('errors.email.0', 'As credenciais informadas sao invalidas.');
     }
 
+    public function test_authenticated_user_can_be_resolved_from_token(): void
+    {
+        User::factory()->create([
+            'email' => 'admin@agro.test',
+            'password' => 'password',
+            'role' => UserRole::ADMIN,
+        ]);
+
+        $token = $this->postJson('/api/auth/login', [
+            'email' => 'admin@agro.test',
+            'password' => 'password',
+        ])->json('token');
+
+        $this->withHeader('Authorization', "Bearer {$token}")
+            ->getJson('/api/auth/me')
+            ->assertOk()
+            ->assertJsonPath('email', 'admin@agro.test')
+            ->assertJsonPath('role', 'admin');
+    }
+
     public function test_protected_route_returns_portuguese_message_when_not_authenticated(): void
     {
         $this->getJson('/api/reports')
