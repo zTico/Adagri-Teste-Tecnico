@@ -178,17 +178,25 @@ onMounted(async () => {
                             <td class="actions-cell">
                                 <button
                                     v-if="authStore.isAdmin"
-                                    class="ghost-button"
+                                    class="icon-button"
+                                    title="Editar"
+                                    aria-label="Editar"
                                     @click="router.push({ name: 'farms-edit', params: { id: farm.id } })"
                                 >
-                                    Editar
+                                    <svg aria-hidden="true" viewBox="0 0 24 24">
+                                        <path d="M4 17.3V20h2.7L17.9 8.8l-2.7-2.7L4 17.3ZM19.7 7a1 1 0 0 0 0-1.4l-1.3-1.3a1 1 0 0 0-1.4 0l-1 1L18.7 8l1-1Z" />
+                                    </svg>
                                 </button>
                                 <button
                                     v-if="authStore.isAdmin"
-                                    class="danger-button"
+                                    class="icon-button danger-icon-button"
+                                    title="Excluir"
+                                    aria-label="Excluir"
                                     @click="removeFarm(farm.id)"
                                 >
-                                    Excluir
+                                    <svg aria-hidden="true" viewBox="0 0 24 24">
+                                        <path d="M8 4h8l1 2h4v2H3V6h4l1-2Zm1 6h2v8H9v-8Zm4 0h2v8h-2v-8Zm4 0h2v8h-2v-8ZM6 10h2l1 10h6l1-10h2l-1.2 11.1A1 1 0 0 1 15.8 22H8.2a1 1 0 0 1-1-.9L6 10Z" />
+                                    </svg>
                                 </button>
                             </td>
                         </tr>
