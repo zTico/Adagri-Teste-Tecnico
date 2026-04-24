@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import PageHeader from '@/components/PageHeader.vue';
 import PaginationBar from '@/components/PaginationBar.vue';
 import { api, compactParams, downloadFile, extractApiError } from '@/lib/api';
 import { formatCpfCnpj, formatPhone, formatPostalCode } from '@/lib/formatters';
 import { useAuthStore } from '@/stores/auth';
-import type { PaginatedResponse, RuralProducer } from '@/types';
+import type { LookupPayload, PaginatedResponse, RuralProducer } from '@/types';
 
 const router = useRouter();
 const authStore = useAuthStore();
 const loading = ref(true);
 const errorMessage = ref('');
 const producers = ref<PaginatedResponse<RuralProducer> | null>(null);
+const lookups = ref<LookupPayload | null>(null);
 const filters = reactive({
     search: '',
     city: '',
@@ -20,6 +21,21 @@ const filters = reactive({
     per_page: 10,
     page: 1,
 });
+let filterTimeout: ReturnType<typeof setTimeout> | undefined;
+
+const stateOptions = computed(() => lookups.value?.producer_locations.map((location) => location.state) ?? []);
+const cityOptions = computed(() => {
+    if (!filters.state) {
+        return [];
+    }
+
+    return lookups.value?.producer_locations.find((location) => location.state === filters.state)?.cities ?? [];
+});
+
+async function fetchLookups(): Promise<void> {
+    const { data } = await api.get<LookupPayload>('/lookups/options');
+    lookups.value = data;
+}
 
 async function fetchProducers(): Promise<void> {
     loading.value = true;
@@ -51,12 +67,32 @@ async function exportProducerHerds(id: number): Promise<void> {
     await downloadFile(`/exports/rural-producers/${id}/herds-pdf`, `produtor-${id}-rebanhos.pdf`);
 }
 
-function applyFilters(): void {
+function scheduleFilter(): void {
+    if (filterTimeout) {
+        clearTimeout(filterTimeout);
+    }
+
     filters.page = 1;
-    void fetchProducers();
+    filterTimeout = setTimeout(() => {
+        void fetchProducers();
+    }, 300);
 }
 
-onMounted(fetchProducers);
+watch(
+    () => filters.state,
+    () => {
+        filters.city = '';
+    },
+);
+
+watch(
+    () => [filters.search, filters.state, filters.city],
+    scheduleFilter,
+);
+
+onMounted(async () => {
+    await Promise.all([fetchLookups(), fetchProducers()]);
+});
 </script>
 
 <template>
@@ -80,14 +116,23 @@ onMounted(fetchProducers);
                 <input v-model="filters.search" placeholder="Nome, email ou documento" />
             </label>
             <label class="field">
-                <span>Cidade</span>
-                <input v-model="filters.city" placeholder="Cidade" />
+                <span>Estado</span>
+                <select v-model="filters.state">
+                    <option value="">Todos os estados</option>
+                    <option v-for="state in stateOptions" :key="state" :value="state">
+                        {{ state }}
+                    </option>
+                </select>
             </label>
             <label class="field">
-                <span>Estado</span>
-                <input v-model="filters.state" maxlength="2" placeholder="UF" />
+                <span>Cidade</span>
+                <select v-model="filters.city" :disabled="!filters.state">
+                    <option value="">{{ filters.state ? 'Todas as cidades' : 'Selecione um estado' }}</option>
+                    <option v-for="city in cityOptions" :key="city" :value="city">
+                        {{ city }}
+                    </option>
+                </select>
             </label>
-            <button class="primary-button" @click="applyFilters">Aplicar filtros</button>
         </section>
 
         <p v-if="errorMessage" class="form-error">{{ errorMessage }}</p>

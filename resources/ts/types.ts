@@ -17,6 +17,11 @@ export interface LookupEntity {
     rural_producer_id?: number;
 }
 
+export interface LocationLookup {
+    state: string;
+    cities: string[];
+}
+
 export interface RuralProducer {
     id: number;
     name: string;
@@ -96,6 +101,8 @@ export interface LookupPayload {
     purposes: OptionItem[];
     rural_producers: LookupEntity[];
     farms: LookupEntity[];
+    producer_locations: LocationLookup[];
+    farm_locations: LocationLookup[];
 }
 
 export interface PostalCodeLookupPayload {

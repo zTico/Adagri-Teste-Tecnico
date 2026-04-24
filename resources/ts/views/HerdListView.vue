@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import PageHeader from '@/components/PageHeader.vue';
 import PaginationBar from '@/components/PaginationBar.vue';
@@ -23,6 +23,7 @@ const filters = reactive({
     per_page: 10,
     page: 1,
 });
+let filterTimeout: ReturnType<typeof setTimeout> | undefined;
 
 async function fetchLookups(): Promise<void> {
     const { data } = await api.get<LookupPayload>('/lookups/options');
@@ -54,10 +55,21 @@ async function removeHerd(id: number): Promise<void> {
     await fetchHerds();
 }
 
-function applyFilters(): void {
+function scheduleFilter(): void {
+    if (filterTimeout) {
+        clearTimeout(filterTimeout);
+    }
+
     filters.page = 1;
-    void fetchHerds();
+    filterTimeout = setTimeout(() => {
+        void fetchHerds();
+    }, 300);
 }
+
+watch(
+    () => [filters.search, filters.species, filters.purpose, filters.farm_id, filters.rural_producer_id],
+    scheduleFilter,
+);
 
 onMounted(async () => {
     await Promise.all([fetchLookups(), fetchHerds()]);
@@ -124,7 +136,6 @@ onMounted(async () => {
                     </option>
                 </select>
             </label>
-            <button class="primary-button" @click="applyFilters">Aplicar filtros</button>
         </section>
 
         <p v-if="errorMessage" class="form-error">{{ errorMessage }}</p>

@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Lookups;
 
+use App\Models\Farm;
+use App\Models\RuralProducer;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
@@ -11,6 +13,31 @@ use Tests\TestCase;
 class PostalCodeLookupTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_lookup_options_include_locations_for_producers_and_farms(): void
+    {
+        Sanctum::actingAs(User::factory()->viewer()->create());
+
+        $producer = RuralProducer::factory()->create([
+            'city' => 'Goiania',
+            'state' => 'GO',
+        ]);
+
+        Farm::factory()->create([
+            'city' => 'Anapolis',
+            'state' => 'GO',
+            'rural_producer_id' => $producer->id,
+        ]);
+
+        $this
+            ->getJson('/api/lookups/options')
+            ->assertOk()
+            ->assertJsonPath('producer_locations.0.state', 'GO')
+            ->assertJsonPath('producer_locations.0.cities.0', 'Goiania')
+            ->assertJsonPath('farm_locations.0.state', 'GO')
+            ->assertJsonPath('farm_locations.0.cities.0', 'Anapolis')
+        ;
+    }
 
     public function test_postal_code_lookup_uses_external_service_and_returns_normalized_data(): void
     {
@@ -30,11 +57,14 @@ class PostalCodeLookupTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertJson([
+            ->assertJson(
+                [
                 'postal_code' => '74000000',
                 'city' => 'Goiania',
                 'state' => 'GO',
-            ]);
+                ] 
+            )
+        ;
     }
 
     public function test_postal_code_lookup_returns_portuguese_message_for_invalid_postal_code(): void
@@ -44,6 +74,7 @@ class PostalCodeLookupTest extends TestCase
         $this->getJson('/api/lookups/postal-code/123')
             ->assertStatus(422)
             ->assertJsonPath('message', 'O CEP deve conter 8 digitos.')
-            ->assertJsonPath('errors.postal_code.0', 'O CEP deve conter 8 digitos.');
+            ->assertJsonPath('errors.postal_code.0', 'O CEP deve conter 8 digitos.')
+        ;
     }
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import PageHeader from '@/components/PageHeader.vue';
 import PaginationBar from '@/components/PaginationBar.vue';
@@ -20,6 +20,16 @@ const filters = reactive({
     rural_producer_id: '',
     per_page: 10,
     page: 1,
+});
+let filterTimeout: ReturnType<typeof setTimeout> | undefined;
+
+const stateOptions = computed(() => lookups.value?.farm_locations.map((location) => location.state) ?? []);
+const cityOptions = computed(() => {
+    if (!filters.state) {
+        return [];
+    }
+
+    return lookups.value?.farm_locations.find((location) => location.state === filters.state)?.cities ?? [];
 });
 
 async function fetchLookups(): Promise<void> {
@@ -57,10 +67,28 @@ async function exportFarms(): Promise<void> {
     await downloadFile('/exports/farms', 'fazendas.xlsx', filters);
 }
 
-function applyFilters(): void {
+function scheduleFilter(): void {
+    if (filterTimeout) {
+        clearTimeout(filterTimeout);
+    }
+
     filters.page = 1;
-    void fetchFarms();
+    filterTimeout = setTimeout(() => {
+        void fetchFarms();
+    }, 300);
 }
+
+watch(
+    () => filters.state,
+    () => {
+        filters.city = '';
+    },
+);
+
+watch(
+    () => [filters.search, filters.state, filters.city, filters.rural_producer_id],
+    scheduleFilter,
+);
 
 onMounted(async () => {
     await Promise.all([fetchLookups(), fetchFarms()]);
@@ -89,12 +117,22 @@ onMounted(async () => {
                 <input v-model="filters.search" placeholder="Nome ou inscricao" />
             </label>
             <label class="field">
-                <span>Cidade</span>
-                <input v-model="filters.city" />
+                <span>Estado</span>
+                <select v-model="filters.state">
+                    <option value="">Todos os estados</option>
+                    <option v-for="state in stateOptions" :key="state" :value="state">
+                        {{ state }}
+                    </option>
+                </select>
             </label>
             <label class="field">
-                <span>Estado</span>
-                <input v-model="filters.state" maxlength="2" />
+                <span>Cidade</span>
+                <select v-model="filters.city" :disabled="!filters.state">
+                    <option value="">{{ filters.state ? 'Todas as cidades' : 'Selecione um estado' }}</option>
+                    <option v-for="city in cityOptions" :key="city" :value="city">
+                        {{ city }}
+                    </option>
+                </select>
             </label>
             <label class="field">
                 <span>Produtor</span>
@@ -109,7 +147,6 @@ onMounted(async () => {
                     </option>
                 </select>
             </label>
-            <button class="primary-button" @click="applyFilters">Aplicar filtros</button>
         </section>
 
         <p v-if="errorMessage" class="form-error">{{ errorMessage }}</p>
