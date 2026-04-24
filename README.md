@@ -13,16 +13,17 @@ Teste tecnico full stack para um sistema de gestao agropecuaria construido com L
 - Painel de relatorios com:
   - total de fazendas por cidade
   - total de animais por especie
-- Consulta opcional de CEP via ViaCEP
+- Consulta via ViaCEP no cadastro do 
+- Consulta IBGE para estados e cidades
 - Dados iniciais com seed
 - Testes de feature para autenticacao, autorizacao, relatorios, exportacoes e consulta de CEP
 
 ## Stack
 
-- Backend: Laravel 12
-- Frontend: Vue 3 + TypeScript + Vite
+- Backend (`servidor/API`): Laravel 12
+- Frontend (`interface web`): Vue 3 + TypeScript + Vite
 - Banco de dados: PostgreSQL
-- Autenticacao: Laravel Sanctum
+- Autenticacao (`login por token`): Laravel Sanctum
 - Ambiente local: Docker Compose
 
 ## Decisoes de Arquitetura
@@ -43,39 +44,39 @@ Teste tecnico full stack para um sistema de gestao agropecuaria construido com L
 
 ### Produtor Rural
 
-- `name`
-- `cpf_cnpj`
-- `phone`
-- `email`
-- `postal_code`
-- `street`
-- `number`
-- `complement`
-- `district`
-- `city`
-- `state`
+- `name` (`nome`)
+- `cpf_cnpj` (`CPF/CNPJ`)
+- `phone` (`telefone`)
+- `email` (`email`)
+- `postal_code` (`CEP`)
+- `street` (`logradouro`)
+- `number` (`numero`)
+- `complement` (`complemento`)
+- `district` (`bairro`)
+- `city` (`cidade`)
+- `state` (`estado`)
 
 ### Fazenda
 
-- `name`
-- `city`
-- `state`
-- `state_registration`
-- `total_area`
-- `rural_producer_id`
+- `name` (`nome`)
+- `city` (`cidade`)
+- `state` (`estado`)
+- `state_registration` (`inscricao estadual`)
+- `total_area` (`area total`)
+- `rural_producer_id` (`id do produtor rural`)
 
 ### Rebanho
 
-- `species`
-- `quantity`
-- `purpose`
-- `farm_id`
+- `species` (`especie`)
+- `quantity` (`quantidade`)
+- `purpose` (`finalidade`)
+- `farm_id` (`id da fazenda`)
 
 ### Especies obrigatorias
 
-- `swine`
-- `goats`
-- `cattle`
+- `swine` (`suinos`)
+- `goats` (`caprinos`)
+- `cattle` (`bovinos`)
 
 ## Como rodar com Docker
 
@@ -116,11 +117,11 @@ O PostgreSQL do projeto fica publicado localmente em:
 
 Credenciais para ferramentas desktop como `pgAdmin4`:
 
-- host: `localhost`
-- port: `5432`
-- maintenance database: `postgres`
-- username: `postgres`
-- password: `postgres`
+- host (`servidor`): `localhost`
+- port (`porta`): `5432`
+- maintenance database (`banco de manutencao`): `postgres`
+- username (`usuario`): `postgres`
+- password (`senha`): `postgres`
 
 Importante:
 
@@ -143,7 +144,6 @@ Ao criar um novo servidor no `pgAdmin`:
 - `Maintenance database`: `postgres`
 - `Username`: `postgres`
 - `Password`: `postgres`
-- `Save password`: marcado
 
 Depois de conectar:
 
@@ -163,6 +163,64 @@ docker compose ps
 ```
 
 Verifique se os servicos `app`, `web`, `db` e `node` estao em execucao e tente novamente em `http://localhost:8081`.
+
+### Acessar o PostgreSQL pelo terminal
+
+Para abrir o banco diretamente pelo terminal usando o container Docker:
+
+```bash
+docker compose exec db psql -U postgres -d agro_management
+```
+
+Comandos uteis dentro do `psql`:
+
+```sql
+\dt
+```
+
+Lista as tabelas do banco.
+
+```sql
+SELECT * FROM users;
+```
+
+Consulta os usuarios cadastrados.
+
+```sql
+SELECT * FROM rural_producers;
+```
+
+Consulta os produtores rurais cadastrados.
+
+```sql
+SELECT * FROM farms;
+```
+
+Consulta as fazendas cadastradas.
+
+```sql
+SELECT * FROM herds;
+```
+
+Consulta os rebanhos cadastrados.
+
+```sql
+\q
+```
+
+Sai do terminal do PostgreSQL.
+
+Tambem e possivel executar uma consulta direta, sem entrar no modo interativo:
+
+```bash
+docker compose exec db psql -U postgres -d agro_management -c "SELECT * FROM users;"
+```
+
+Se o `psql` estiver instalado no seu computador, tambem pode conectar pela porta publicada no host:
+
+```bash
+PGPASSWORD=postgres psql -h 127.0.0.1 -p 5432 -U postgres -d agro_management
+```
 
 ## Usuarios de Demonstracao
 
@@ -240,27 +298,27 @@ docker compose exec app php artisan migrate:fresh --seed
 
 ### Produtores rurais
 
-- `search`
-- `city`
-- `state`
-- `per_page`
+- `search` (`busca`)
+- `city` (`cidade`)
+- `state` (`estado`)
+- `per_page` (`itens por pagina`)
 
 ### Fazendas
 
-- `search`
-- `city`
-- `state`
-- `rural_producer_id`
-- `per_page`
+- `search` (`busca`)
+- `city` (`cidade`)
+- `state` (`estado`)
+- `rural_producer_id` (`id do produtor rural`)
+- `per_page` (`itens por pagina`)
 
 ### Rebanhos
 
-- `search`
-- `species`
-- `purpose`
-- `farm_id`
-- `rural_producer_id`
-- `per_page`
+- `search` (`busca`)
+- `species` (`especie`)
+- `purpose` (`finalidade`)
+- `farm_id` (`id da fazenda`)
+- `rural_producer_id` (`id do produtor rural`)
+- `per_page` (`itens por pagina`)
 
 ## Testes
 
@@ -274,8 +332,5 @@ A suite de testes cobre:
 - consulta de CEP com HTTP fake
 
 ## Observacoes
-
-- O codigo da aplicacao continua em ingles, conforme o requisito original.
-- Os textos visiveis de interface e documentacao foram adaptados para portugues.
 - A consulta de CEP foi isolada entre um fluxo de dominio e um gateway de infraestrutura.
 - O frontend consome a API REST diretamente com tokens do Sanctum.
