@@ -17,7 +17,7 @@ const routes = [
                 path: '',
                 name: 'dashboard',
                 component: () => import('@/views/DashboardView.vue'),
-                meta: { title: 'Relatorios' },
+                meta: { title: 'Relatórios' },
             },
             {
                 path: 'rural-producers',

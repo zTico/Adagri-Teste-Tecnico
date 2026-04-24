@@ -52,7 +52,7 @@ async function handleLogout(): Promise<void> {
             </header>
 
             <nav class="site-nav panel-card">
-                <RouterLink to="/">Relatorios</RouterLink>
+                <RouterLink to="/">Relatórios</RouterLink>
                 <RouterLink to="/rural-producers">Produtores</RouterLink>
                 <RouterLink to="/farms">Fazendas</RouterLink>
                 <RouterLink to="/herds">Rebanhos</RouterLink>
