@@ -63,7 +63,7 @@ onMounted(fetchProducers);
     <section class="page-section">
         <PageHeader
             title="Produtores Rurais"
-            description="Cadastre produtores com dados de contato e endereco estruturado."
+            description="Cadastre produtores com dados de contato e endereço estruturado."
         >
             <button
                 v-if="authStore.isAdmin"
@@ -101,9 +101,9 @@ onMounted(fetchProducers);
                             <th>Nome</th>
                             <th>Documento</th>
                             <th>Contato</th>
-                            <th>Endereco</th>
+                            <th>Endereço</th>
                             <th>Fazendas</th>
-                            <th>Acoes</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -71,8 +71,8 @@
                     <tbody>
                         @forelse ($farm['herds'] as $herd)
                             <tr>
-                                <td>{{ str($herd['species'])->headline() }}</td>
-                                <td>{{ str($herd['purpose'])->headline() }}</td>
+                                <td>{{ $herd['species'] ?? '-' }}</td>
+                                <td>{{ $herd['purpose'] ?? '-' }}</td>
                                 <td>{{ $herd['quantity'] }}</td>
                                 <td>{{ $herd['updated_at'] }}</td>
                             </tr>

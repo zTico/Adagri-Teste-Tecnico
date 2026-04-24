@@ -71,7 +71,7 @@ onMounted(async () => {
     <section class="page-section">
         <PageHeader
             title="Fazendas"
-            description="Acompanhe unidades operacionais, inscricoes e area total por produtor."
+            description="Acompanhe unidades operacionais, inscrições e área total por produtor."
         >
             <button class="ghost-button" @click="exportFarms">Exportar .xlsx</button>
             <button
@@ -121,18 +121,18 @@ onMounted(async () => {
                     <thead>
                         <tr>
                             <th>Nome</th>
-                            <th>Localizacao</th>
+                            <th>Localização</th>
                             <th>Produtor</th>
-                            <th>Area</th>
+                            <th>Área</th>
                             <th>Animais</th>
-                            <th>Acoes</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="farm in farms.data" :key="farm.id">
                             <td>
                                 <strong>{{ farm.name }}</strong>
-                                <p class="table-subtitle">{{ farm.state_registration ?? 'Sem inscricao' }}</p>
+                                <p class="table-subtitle">{{ farm.state_registration ?? 'Sem inscrição' }}</p>
                             </td>
                             <td>{{ farm.city }}, {{ farm.state }}</td>
                             <td>{{ farm.rural_producer?.name ?? '-' }}</td>

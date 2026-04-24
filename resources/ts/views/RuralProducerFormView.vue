@@ -133,7 +133,7 @@ onMounted(fetchProducer);
     <section class="page-section">
         <PageHeader
             :title="isEditing ? 'Editar Produtor Rural' : 'Cadastrar Produtor Rural'"
-            description="Informe documento, contato e endereco estruturado."
+            description="Informe documento, contato e endereço estruturado."
         />
 
         <form class="panel-card form-grid-2" @submit.prevent="submit">
@@ -211,7 +211,7 @@ onMounted(fetchProducer);
             </label>
 
             <p v-if="errorMessage" class="form-error full-span">{{ errorMessage }}</p>
-            <p v-else-if="lookupLoading" class="muted-card full-span">Buscando endereco pelo CEP...</p>
+            <p v-else-if="lookupLoading" class="muted-card full-span">Buscando endereço pelo CEP...</p>
 
             <div class="form-actions full-span">
                 <button class="ghost-button" type="button" @click="router.push({ name: 'rural-producers' })">

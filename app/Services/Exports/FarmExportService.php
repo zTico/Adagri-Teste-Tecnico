@@ -32,13 +32,22 @@ class FarmExportService
         ])->all();
 
         $path = $this->writer->create(
-            'Farms',
-            ['Name', 'City', 'State', 'State Registration', 'Total Area', 'Producer', 'Herd Count', 'Total Animals'],
+            'Fazendas',
+            [
+                'Nome',
+                'Cidade',
+                'Estado',
+                'Inscrição Estadual',
+                'Área Total',
+                'Produtor',
+                'Quantidade de Rebanhos',
+                'Total de Animais'
+            ],
             $rows,
         );
 
         return response()
-            ->download($path, 'farms.xlsx', [
+            ->download($path, 'fazendas.xlsx', [
                 'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             ])
             ->deleteFileAfterSend(true)

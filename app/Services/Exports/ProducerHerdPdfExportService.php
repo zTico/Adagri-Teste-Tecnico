@@ -16,8 +16,8 @@ class ProducerHerdPdfExportService
         $farms = $ruralProducer->farms
             ->map(function ($farm): array {
                 $herds = $farm->herds->map(fn ($herd): array => [
-                    'species' => $herd->species?->value,
-                    'purpose' => $herd->purpose?->value,
+                    'species' => $herd->species?->label(),
+                    'purpose' => $herd->purpose?->label(),
                     'quantity' => $herd->quantity,
                     'updated_at' => $herd->updated_at?->format('Y-m-d H:i'),
                 ])->all();
@@ -30,7 +30,8 @@ class ProducerHerdPdfExportService
                     'herds' => $herds,
                 ];
             })
-            ->all();
+            ->all()
+        ;
 
         $options = new Options([
             'defaultFont' => 'DejaVu Sans',
