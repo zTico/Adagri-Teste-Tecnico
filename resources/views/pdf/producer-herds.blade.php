@@ -46,14 +46,15 @@
         </style>
     </head>
     <body>
+        <img src="{{ public_path('adagri-logo.png') }}" alt="Adagri" style="height: 60px; margin-bottom: 16px; display: block;">
         <h1>Relatorio de Rebanhos por Produtor</h1>
         <div class="meta">
             <div><strong>Produtor:</strong> {{ $ruralProducer->name }}</div>
             <div><strong>Documento:</strong> {{ $ruralProducer->cpf_cnpj }}</div>
-            <div><strong>Gerado em:</strong> {{ $generatedAt->format('Y-m-d H:i') }}</div>
+            <div><strong>Gerado em:</strong> {{ $generatedAt->format('d-m-Y H:i') }}</div>
         </div>
 
-        @foreach ($farms as $farm)
+        @forelse ($farms as $farm)
             <section class="farm">
                 <h2>{{ $farm['name'] }}</h2>
                 <div>{{ $farm['city'] }}, {{ $farm['state'] }}</div>
@@ -74,7 +75,7 @@
                                 <td>{{ $herd['species'] ?? '-' }}</td>
                                 <td>{{ $herd['purpose'] ?? '-' }}</td>
                                 <td>{{ $herd['quantity'] }}</td>
-                                <td>{{ $herd['updated_at'] }}</td>
+                                <td>{{ $herd['updated_at'] ? $herd['updated_at']->format('d-m-Y H:i') : '-' }}</td>
                             </tr>
                         @empty
                             <tr>
@@ -84,6 +85,10 @@
                     </tbody>
                 </table>
             </section>
-        @endforeach
+        @empty
+            <section class="farm">
+                <div>Ainda não há fazenda registrada.</div>
+            </section>
+        @endforelse
     </body>
 </html>

@@ -35,6 +35,8 @@ class ProducerHerdPdfExportService
 
         $options = new Options([
             'defaultFont' => 'DejaVu Sans',
+            'chroot' => base_path(),
+            'isRemoteEnabled' => true,
         ]);
 
         $dompdf = new Dompdf($options);
