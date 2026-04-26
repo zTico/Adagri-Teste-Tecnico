@@ -2,6 +2,7 @@
 
 namespace App\Infra\Db;
 
+use App\Domain\Shared\DataNormalizer;
 use App\Domain\RuralProducers\RuralProducerFilters;
 use App\Models\RuralProducer;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -53,10 +54,16 @@ class RuralProducerDb
             ->when(
                 $filters->search(),
                 fn (Builder $builder, string $search) => $builder->where(function (Builder $nested) use ($search): void {
+                    $documentSearch = DataNormalizer::digitsOnly($search);
+
                     $nested
                         ->where('name', 'like', "%{$search}%")
                         ->orWhere('cpf_cnpj', 'like', "%{$search}%")
                         ->orWhere('email', 'like', "%{$search}%");
+
+                    if ($documentSearch !== null) {
+                        $nested->orWhere('cpf_cnpj', 'like', "%{$documentSearch}%");
+                    }
                 })
             )
             ->when(

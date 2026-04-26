@@ -1,0 +1,587 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-04-24T00:00:00.000Z",
+  "__export_source": "Codex",
+  "resources": [
+    {
+      "_id": "wrk_agro_management",
+      "_type": "workspace",
+      "name": "Agro Management API",
+      "description": "Colecao local para testar a API REST do sistema de gestao agropecuaria."
+    },
+    {
+      "_id": "env_agro_management",
+      "_type": "environment",
+      "parentId": "wrk_agro_management",
+      "name": "Local",
+      "data": {
+        "base_url": "http://localhost:8081/api",
+        "token": "",
+        "rural_producer_id": "1",
+        "farm_id": "1",
+        "herd_id": "1"
+      }
+    },
+    {
+      "_id": "fld_auth",
+      "_type": "request_group",
+      "parentId": "wrk_agro_management",
+      "name": "Autenticacao"
+    },
+    {
+      "_id": "req_login_admin",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Login - Admin",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/login",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"admin@agro.test\",\n  \"password\": \"password\"\n}"
+      }
+    },
+    {
+      "_id": "req_login_viewer",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Login - Viewer",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/login",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"viewer@agro.test\",\n  \"password\": \"password\"\n}"
+      }
+    },
+    {
+      "_id": "req_auth_me",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Me",
+      "method": "GET",
+      "url": "{{ _.base_url }}/auth/me",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "req_logout",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Logout",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/logout",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "fld_producers",
+      "_type": "request_group",
+      "parentId": "wrk_agro_management",
+      "name": "Produtores Rurais"
+    },
+    {
+      "_id": "req_producers_index",
+      "_type": "request",
+      "parentId": "fld_producers",
+      "name": "Listar Produtores",
+      "method": "GET",
+      "url": "{{ _.base_url }}/rural-producers?search=&city=&state=&per_page=10",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "req_producers_store",
+      "_type": "request",
+      "parentId": "fld_producers",
+      "name": "Criar Produtor",
+      "method": "POST",
+      "url": "{{ _.base_url }}/rural-producers",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Produtor API\",\n  \"cpf_cnpj\": \"11222333000181\",\n  \"phone\": \"85999998888\",\n  \"email\": \"produtor.api@example.com\",\n  \"postal_code\": \"60000000\",\n  \"street\": \"Rua das Fazendas\",\n  \"number\": \"100\",\n  \"complement\": \"Sitio A\",\n  \"district\": \"Centro\",\n  \"city\": \"Fortaleza\",\n  \"state\": \"CE\"\n}"
+      }
+    },
+    {
+      "_id": "req_producers_show",
+      "_type": "request",
+      "parentId": "fld_producers",
+      "name": "Detalhar Produtor",
+      "method": "GET",
+      "url": "{{ _.base_url }}/rural-producers/{{ _.rural_producer_id }}",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "req_producers_update",
+      "_type": "request",
+      "parentId": "fld_producers",
+      "name": "Atualizar Produtor",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/rural-producers/{{ _.rural_producer_id }}",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Produtor API Atualizado\",\n  \"cpf_cnpj\": \"11222333000181\",\n  \"phone\": \"85999997777\",\n  \"email\": \"produtor.api@example.com\",\n  \"postal_code\": \"60000000\",\n  \"street\": \"Rua das Fazendas\",\n  \"number\": \"100\",\n  \"complement\": \"Sitio A\",\n  \"district\": \"Centro\",\n  \"city\": \"Fortaleza\",\n  \"state\": \"CE\"\n}"
+      }
+    },
+    {
+      "_id": "req_producers_delete",
+      "_type": "request",
+      "parentId": "fld_producers",
+      "name": "Excluir Produtor",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/rural-producers/{{ _.rural_producer_id }}",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "fld_farms",
+      "_type": "request_group",
+      "parentId": "wrk_agro_management",
+      "name": "Fazendas"
+    },
+    {
+      "_id": "req_farms_index",
+      "_type": "request",
+      "parentId": "fld_farms",
+      "name": "Listar Fazendas",
+      "method": "GET",
+      "url": "{{ _.base_url }}/farms?search=&city=&state=&rural_producer_id=&per_page=10",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "req_farms_store",
+      "_type": "request",
+      "parentId": "fld_farms",
+      "name": "Criar Fazenda",
+      "method": "POST",
+      "url": "{{ _.base_url }}/farms",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Fazenda API\",\n  \"city\": \"Fortaleza\",\n  \"state\": \"CE\",\n  \"state_registration\": \"IE-API-001\",\n  \"total_area\": 120.5,\n  \"rural_producer_id\": {{ _.rural_producer_id }}\n}"
+      }
+    },
+    {
+      "_id": "req_farms_show",
+      "_type": "request",
+      "parentId": "fld_farms",
+      "name": "Detalhar Fazenda",
+      "method": "GET",
+      "url": "{{ _.base_url }}/farms/{{ _.farm_id }}",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "req_farms_update",
+      "_type": "request",
+      "parentId": "fld_farms",
+      "name": "Atualizar Fazenda",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/farms/{{ _.farm_id }}",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Fazenda API Atualizada\",\n  \"city\": \"Fortaleza\",\n  \"state\": \"CE\",\n  \"state_registration\": \"IE-API-001\",\n  \"total_area\": 150.75,\n  \"rural_producer_id\": {{ _.rural_producer_id }}\n}"
+      }
+    },
+    {
+      "_id": "req_farms_delete",
+      "_type": "request",
+      "parentId": "fld_farms",
+      "name": "Excluir Fazenda",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/farms/{{ _.farm_id }}",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "fld_herds",
+      "_type": "request_group",
+      "parentId": "wrk_agro_management",
+      "name": "Rebanhos"
+    },
+    {
+      "_id": "req_herds_index",
+      "_type": "request",
+      "parentId": "fld_herds",
+      "name": "Listar Rebanhos",
+      "method": "GET",
+      "url": "{{ _.base_url }}/herds?search=&species=&purpose=&farm_id=&rural_producer_id=&per_page=10",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "req_herds_store",
+      "_type": "request",
+      "parentId": "fld_herds",
+      "name": "Criar Rebanho",
+      "method": "POST",
+      "url": "{{ _.base_url }}/herds",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"species\": \"cattle\",\n  \"quantity\": 80,\n  \"purpose\": \"meat\",\n  \"farm_id\": {{ _.farm_id }}\n}"
+      }
+    },
+    {
+      "_id": "req_herds_show",
+      "_type": "request",
+      "parentId": "fld_herds",
+      "name": "Detalhar Rebanho",
+      "method": "GET",
+      "url": "{{ _.base_url }}/herds/{{ _.herd_id }}",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "req_herds_update",
+      "_type": "request",
+      "parentId": "fld_herds",
+      "name": "Atualizar Rebanho",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/herds/{{ _.herd_id }}",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"species\": \"cattle\",\n  \"quantity\": 95,\n  \"purpose\": \"mixed\",\n  \"farm_id\": {{ _.farm_id }}\n}"
+      }
+    },
+    {
+      "_id": "req_herds_delete",
+      "_type": "request",
+      "parentId": "fld_herds",
+      "name": "Excluir Rebanho",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/herds/{{ _.herd_id }}",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "fld_reports_exports",
+      "_type": "request_group",
+      "parentId": "wrk_agro_management",
+      "name": "Relatorios e Exportacoes"
+    },
+    {
+      "_id": "req_reports",
+      "_type": "request",
+      "parentId": "fld_reports_exports",
+      "name": "Relatorios",
+      "method": "GET",
+      "url": "{{ _.base_url }}/reports",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "req_export_farms",
+      "_type": "request",
+      "parentId": "fld_reports_exports",
+      "name": "Exportar Fazendas XLSX",
+      "method": "GET",
+      "url": "{{ _.base_url }}/exports/farms?search=&city=&state=&rural_producer_id=",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "req_export_herds_pdf",
+      "_type": "request",
+      "parentId": "fld_reports_exports",
+      "name": "Exportar Rebanhos do Produtor PDF",
+      "method": "GET",
+      "url": "{{ _.base_url }}/exports/rural-producers/{{ _.rural_producer_id }}/herds-pdf",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/pdf"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "fld_lookups",
+      "_type": "request_group",
+      "parentId": "wrk_agro_management",
+      "name": "Consultas Auxiliares"
+    },
+    {
+      "_id": "req_lookup_options",
+      "_type": "request",
+      "parentId": "fld_lookups",
+      "name": "Opcoes Gerais",
+      "method": "GET",
+      "url": "{{ _.base_url }}/lookups/options",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "req_lookup_states",
+      "_type": "request",
+      "parentId": "fld_lookups",
+      "name": "Estados do Brasil",
+      "method": "GET",
+      "url": "{{ _.base_url }}/lookups/brazil-states",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "req_lookup_cities",
+      "_type": "request",
+      "parentId": "fld_lookups",
+      "name": "Cidades por Estado",
+      "method": "GET",
+      "url": "{{ _.base_url }}/lookups/brazil-states/CE/cities",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "req_lookup_postal_code",
+      "_type": "request",
+      "parentId": "fld_lookups",
+      "name": "Consultar CEP",
+      "method": "GET",
+      "url": "{{ _.base_url }}/lookups/postal-code/01001000",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    }
+  ]
+}

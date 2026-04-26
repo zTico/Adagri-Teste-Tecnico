@@ -251,6 +251,18 @@ Recriar banco e dados iniciais:
 docker compose exec app php artisan migrate:fresh --seed
 ```
 
+## Colecoes para API
+
+Foram adicionados arquivos prontos para testar as rotas da API em clientes HTTP:
+
+- Postman collection: `docs/api-clients/agro-management.postman_collection.json`
+- Postman environment: `docs/api-clients/agro-management.postman_environment.json`
+- Insomnia export: `docs/api-clients/agro-management.insomnia.json`
+
+No Postman, importe a collection e o environment. Depois selecione o environment `Agro Management Local`, execute `Login - Admin` e o token sera salvo automaticamente na variavel `token`.
+
+No Insomnia, importe o arquivo `agro-management.insomnia.json`, execute `Login - Admin`, copie o valor de `token` retornado na resposta e cole na variavel de ambiente `token`.
+
 ## Principais rotas da API
 
 ### Autenticacao
