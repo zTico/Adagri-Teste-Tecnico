@@ -3,7 +3,7 @@
 Teste tecnico full stack para um sistema de gestao agropecuaria construido com Laravel 12, Vue 3, TypeScript, Vite, PostgreSQL, Sanctum e Docker.
 
 ## Como instalar o sistema localmente:
-- https://youtu.be/jyQQkn1jtKo
+- https://youtu.be/sg492n-UZUc
 
 ## Video Mostrando o Funcionamento do Sistema:
 - https://youtu.be/5_NQyBkfkQI
