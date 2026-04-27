@@ -4,6 +4,7 @@ export interface User {
     email: string;
     role: 'admin' | 'viewer';
     role_label: string;
+    profile_photo_url: string | null;
 }
 
 export interface OptionItem {

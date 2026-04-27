@@ -7,7 +7,6 @@ export const api = axios.create({
     baseURL: '/api',
     headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json',
     },
 });
 
@@ -44,7 +43,7 @@ export function extractApiError(error: unknown): ApiValidationError {
     }
 
     return {
-        message: 'An unexpected error occurred. Please try again.',
+        message: 'Ocorreu um erro inesperado. Tente novamente.',
     };
 }
 

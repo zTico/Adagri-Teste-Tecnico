@@ -110,6 +110,128 @@
       }
     },
     {
+      "_id": "fld_profile",
+      "_type": "request_group",
+      "parentId": "wrk_agro_management",
+      "name": "Perfil do Usuario"
+    },
+    {
+      "_id": "req_profile_show",
+      "_type": "request",
+      "parentId": "fld_profile",
+      "name": "Detalhar Perfil",
+      "method": "GET",
+      "url": "{{ _.base_url }}/profile",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
+      "_id": "req_profile_update",
+      "_type": "request",
+      "parentId": "fld_profile",
+      "name": "Atualizar Perfil",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/profile",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Usuário Administrador\",\n  \"email\": \"admin@agro.test\"\n}"
+      }
+    },
+    {
+      "_id": "req_profile_password",
+      "_type": "request",
+      "parentId": "fld_profile",
+      "name": "Alterar Senha",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/profile/password",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"current_password\": \"password\",\n  \"password\": \"new-password\",\n  \"password_confirmation\": \"new-password\"\n}"
+      }
+    },
+    {
+      "_id": "req_profile_photo_upload",
+      "_type": "request",
+      "parentId": "fld_profile",
+      "name": "Enviar Foto de Perfil",
+      "method": "POST",
+      "url": "{{ _.base_url }}/profile/photo",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "body": {
+        "mimeType": "multipart/form-data",
+        "params": [
+          {
+            "name": "photo",
+            "type": "file",
+            "fileName": ""
+          }
+        ]
+      }
+    },
+    {
+      "_id": "req_profile_photo_delete",
+      "_type": "request",
+      "parentId": "fld_profile",
+      "name": "Remover Foto de Perfil",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/profile/photo",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      }
+    },
+    {
       "_id": "fld_producers",
       "_type": "request_group",
       "parentId": "wrk_agro_management",

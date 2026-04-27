@@ -33,6 +33,7 @@ if ! grep -q "^APP_KEY=base64:" .env; then
 fi
 
 php artisan migrate --force
+php artisan storage:link --force
 
 USER_COUNT=$(PGPASSWORD="${DB_PASSWORD:-postgres}" psql \
     -h "${DB_HOST:-db}" \

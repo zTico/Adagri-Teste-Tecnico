@@ -9,6 +9,16 @@ const router = useRouter();
 const logoUrl = `${import.meta.env.BASE_URL}adagri-logo.png`;
 
 const title = computed(() => (route.meta.title as string | undefined) ?? 'Visão Geral');
+const userInitials = computed(() => {
+    const name = authStore.user?.name ?? '';
+
+    return name
+        .split(' ')
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part) => part.charAt(0).toUpperCase())
+        .join('') || 'US';
+});
 const roleLabel = computed(() => {
     if (authStore.user?.role === 'admin') {
         return 'Administrador';
@@ -32,7 +42,7 @@ async function handleLogout(): Promise<void> {
         <header class="site-utility-bar">
             <div class="site-utility-content">
                 <span>Agência de Defesa Agropecuária do Estado do Ceará</span>
-                <span>{{ authStore.user?.name }}</span>
+                <RouterLink to="/profile">{{ authStore.user?.name }}</RouterLink>
             </div>
         </header>
 
@@ -47,6 +57,20 @@ async function handleLogout(): Promise<void> {
                 </RouterLink>
 
                 <div class="topbar-actions">
+                    <RouterLink to="/profile" class="profile-chip">
+                        <span class="profile-chip-avatar">
+                            <img
+                                v-if="authStore.user?.profile_photo_url"
+                                :src="authStore.user.profile_photo_url"
+                                alt="Foto de perfil"
+                            />
+                            <span v-else>{{ userInitials }}</span>
+                        </span>
+                        <span>
+                            <strong>{{ authStore.user?.name }}</strong>
+                            <small>{{ roleLabel }}</small>
+                        </span>
+                    </RouterLink>
                     <button class="ghost-button" @click="handleLogout">Sair</button>
                 </div>
             </header>
@@ -56,6 +80,7 @@ async function handleLogout(): Promise<void> {
                 <RouterLink to="/rural-producers">Produtores</RouterLink>
                 <RouterLink to="/farms">Fazendas</RouterLink>
                 <RouterLink to="/herds">Rebanhos</RouterLink>
+                <RouterLink to="/profile">Meu Perfil</RouterLink>
                 <span class="badge">{{ title }}</span>
             </nav>
 

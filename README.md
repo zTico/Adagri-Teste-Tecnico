@@ -107,6 +107,7 @@ O container `app` executa automaticamente:
 - instalacao das dependencias Composer quando necessario
 - espera pelo PostgreSQL
 - migrations
+- criacao do link publico do storage para arquivos enviados
 - seed quando o banco estiver vazio
 
 ## Acesso ao PostgreSQL no host
@@ -271,6 +272,14 @@ No Insomnia, importe o arquivo `agro-management.insomnia.json`, execute `Login -
 - `GET /api/auth/me`
 - `POST /api/auth/logout`
 
+### Perfil do Usuario
+
+- `GET /api/profile`
+- `PUT /api/profile`
+- `PUT /api/profile/password`
+- `POST /api/profile/photo`
+- `DELETE /api/profile/photo`
+
 ### Produtores Rurais
 
 - `GET /api/rural-producers`
@@ -346,3 +355,4 @@ A suite de testes cobre:
 ## Observacoes
 - A consulta de CEP foi isolada entre um fluxo de dominio e um gateway de infraestrutura.
 - O frontend consome a API REST diretamente com tokens do Sanctum.
+- Fotos de perfil sao salvas no disco publico em `storage/app/public/profile-photos` e expostas via `public/storage`.

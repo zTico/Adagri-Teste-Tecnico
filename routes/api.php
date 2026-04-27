@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ExportController;
 use App\Http\Controllers\Api\FarmController;
 use App\Http\Controllers\Api\HerdController;
 use App\Http\Controllers\Api\LookupController;
+use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\RuralProducerController;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,14 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::prefix('auth')->group(function (): void {
         Route::get('/me', [AuthController::class, 'me']);
         Route::post('/logout', [AuthController::class, 'logout']);
+    });
+
+    Route::prefix('profile')->group(function (): void {
+        Route::get('/', [ProfileController::class, 'show']);
+        Route::put('/', [ProfileController::class, 'update']);
+        Route::put('/password', [ProfileController::class, 'updatePassword']);
+        Route::post('/photo', [ProfileController::class, 'uploadPhoto']);
+        Route::delete('/photo', [ProfileController::class, 'deletePhoto']);
     });
 
     Route::prefix('lookups')->group(function (): void {

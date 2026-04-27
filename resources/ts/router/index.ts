@@ -20,6 +20,12 @@ const routes = [
                 meta: { title: 'Relatórios' },
             },
             {
+                path: 'profile',
+                name: 'profile',
+                component: () => import('@/views/ProfileView.vue'),
+                meta: { title: 'Meu Perfil' },
+            },
+            {
                 path: 'rural-producers',
                 name: 'rural-producers',
                 component: () => import('@/views/RuralProducerListView.vue'),
