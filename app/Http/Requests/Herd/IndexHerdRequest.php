@@ -20,8 +20,8 @@ class IndexHerdRequest extends FormRequest
             'search' => ['nullable', 'string', 'max:255'],
             'species' => ['nullable', Rule::in(HerdSpecies::values())],
             'purpose' => ['nullable', Rule::in(HerdPurpose::values())],
-            'farm_id' => ['nullable', 'integer', 'exists:farms,id'],
-            'rural_producer_id' => ['nullable', 'integer', 'exists:rural_producers,id'],
+            'farm_id' => ['nullable', 'uuid', 'exists:farms,id'],
+            'rural_producer_id' => ['nullable', 'uuid', 'exists:rural_producers,id'],
             'per_page' => ['nullable', 'integer', 'min:5', 'max:100'],
         ];
     }

@@ -28,7 +28,7 @@ class UpsertFarmRequest extends FormRequest
                 Rule::unique('farms', 'state_registration')->ignore($farmId),
             ],
             'total_area' => ['required', 'numeric', 'gt:0'],
-            'rural_producer_id' => ['required', 'integer', 'exists:rural_producers,id'],
+            'rural_producer_id' => ['required', 'uuid', 'exists:rural_producers,id'],
         ];
     }
 

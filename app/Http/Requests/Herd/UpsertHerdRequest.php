@@ -20,7 +20,7 @@ class UpsertHerdRequest extends FormRequest
             'species' => ['required', Rule::in(HerdSpecies::values())],
             'quantity' => ['required', 'integer', 'min:1'],
             'purpose' => ['required', Rule::in(HerdPurpose::values())],
-            'farm_id' => ['required', 'integer', 'exists:farms,id'],
+            'farm_id' => ['required', 'uuid', 'exists:farms,id'],
         ];
     }
 }

@@ -28,18 +28,14 @@ class HerdFilters
         return $this->string('purpose');
     }
 
-    public function farmId(): ?int
+    public function farmId(): ?string
     {
-        $farmId = $this->filters['farm_id'] ?? null;
-
-        return $farmId === null ? null : (int) $farmId;
+        return $this->string('farm_id');
     }
 
-    public function ruralProducerId(): ?int
+    public function ruralProducerId(): ?string
     {
-        $producerId = $this->filters['rural_producer_id'] ?? null;
-
-        return $producerId === null ? null : (int) $producerId;
+        return $this->string('rural_producer_id');
     }
 
     private function string(string $key): ?string

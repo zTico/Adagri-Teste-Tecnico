@@ -35,7 +35,7 @@ class RuralProducerDb
         return $ruralProducer->refresh();
     }
 
-    public function findForResource(int $producerId): RuralProducer
+    public function findForResource(string $producerId): RuralProducer
     {
         return RuralProducer::query()
             ->with(['farms.herds'])

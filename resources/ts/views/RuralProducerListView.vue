@@ -54,7 +54,7 @@ async function fetchProducers(): Promise<void> {
     }
 }
 
-async function removeProducer(id: number): Promise<void> {
+async function removeProducer(id: string): Promise<void> {
     if (!window.confirm('Deseja excluir este produtor rural e todas as fazendas e rebanhos vinculados?')) {
         return;
     }

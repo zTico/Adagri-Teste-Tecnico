@@ -46,7 +46,7 @@ async function fetchHerds(): Promise<void> {
     }
 }
 
-async function removeHerd(id: number): Promise<void> {
+async function removeHerd(id: string): Promise<void> {
     if (!window.confirm('Deseja excluir este registro de rebanho?')) {
         return;
     }

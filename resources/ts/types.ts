@@ -1,5 +1,5 @@
 export interface User {
-    id: number;
+    id: string;
     name: string;
     email: string;
     role: 'admin' | 'viewer';
@@ -13,9 +13,9 @@ export interface OptionItem {
 }
 
 export interface LookupEntity {
-    id: number;
+    id: string;
     name: string;
-    rural_producer_id?: number;
+    rural_producer_id?: string;
 }
 
 export interface LocationLookup {
@@ -24,7 +24,7 @@ export interface LocationLookup {
 }
 
 export interface RuralProducer {
-    id: number;
+    id: string;
     name: string;
     cpf_cnpj: string;
     phone: string | null;
@@ -45,7 +45,7 @@ export interface RuralProducer {
 }
 
 export interface Farm {
-    id: number;
+    id: string;
     name: string;
     city: string;
     state: string;
@@ -54,7 +54,7 @@ export interface Farm {
     herds_count?: number | null;
     total_animals?: number | null;
     rural_producer?: {
-        id: number;
+        id: string;
         name: string;
     } | null;
     herds?: Herd[];
@@ -63,17 +63,17 @@ export interface Farm {
 }
 
 export interface Herd {
-    id: number;
+    id: string;
     species: string;
     quantity: number;
     purpose: string;
     farm?: {
-        id: number;
+        id: string;
         name: string;
-        rural_producer_id: number;
+        rural_producer_id: string;
     } | null;
     rural_producer?: {
-        id: number;
+        id: string;
         name: string;
     } | null;
     updated_at: string;

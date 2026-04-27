@@ -9,11 +9,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('herds', function (Blueprint $table): void {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('species');
             $table->unsignedInteger('quantity');
             $table->string('purpose');
-            $table->foreignId('farm_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('farm_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

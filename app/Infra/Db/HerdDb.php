@@ -34,7 +34,7 @@ class HerdDb
         return $herd->refresh();
     }
 
-    public function findForResource(int $herdId): Herd
+    public function findForResource(string $herdId): Herd
     {
         return Herd::query()
             ->with(['farm:id,name,rural_producer_id', 'farm.ruralProducer:id,name'])
@@ -65,11 +65,11 @@ class HerdDb
             )
             ->when(
                 $filters->farmId(),
-                fn (Builder $builder, int $farmId) => $builder->where('farm_id', $farmId)
+                fn (Builder $builder, string $farmId) => $builder->where('farm_id', $farmId)
             )
             ->when(
                 $filters->ruralProducerId(),
-                fn (Builder $builder, int $producerId) => $builder->whereHas('farm', function (Builder $farmQuery) use ($producerId): void {
+                fn (Builder $builder, string $producerId) => $builder->whereHas('farm', function (Builder $farmQuery) use ($producerId): void {
                     $farmQuery->where('rural_producer_id', $producerId);
                 })
             );

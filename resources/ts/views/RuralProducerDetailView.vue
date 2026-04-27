@@ -55,7 +55,7 @@ async function removeProducer(): Promise<void> {
     await router.push({ name: 'rural-producers' });
 }
 
-async function exportProducerHerds(id: number): Promise<void> {
+async function exportProducerHerds(id: string): Promise<void> {
     await downloadFile(`/exports/rural-producers/${id}/herds-pdf`, `produtor-${id}-rebanhos.pdf`);
 }
 

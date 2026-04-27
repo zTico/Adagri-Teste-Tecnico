@@ -28,11 +28,9 @@ class FarmFilters
         return $this->string('state');
     }
 
-    public function ruralProducerId(): ?int
+    public function ruralProducerId(): ?string
     {
-        $producerId = $this->filters['rural_producer_id'] ?? null;
-
-        return $producerId === null ? null : (int) $producerId;
+        return $this->string('rural_producer_id');
     }
 
     private function string(string $key): ?string

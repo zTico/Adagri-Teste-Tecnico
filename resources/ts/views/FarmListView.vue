@@ -54,7 +54,7 @@ async function fetchFarms(): Promise<void> {
     }
 }
 
-async function removeFarm(id: number): Promise<void> {
+async function removeFarm(id: string): Promise<void> {
     if (!window.confirm('Deseja excluir esta fazenda e seus rebanhos?')) {
         return;
     }

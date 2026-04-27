@@ -17,7 +17,7 @@ class IndexFarmRequest extends FormRequest
             'search' => ['nullable', 'string', 'max:255'],
             'city' => ['nullable', 'string', 'max:255'],
             'state' => ['nullable', 'string', 'size:2'],
-            'rural_producer_id' => ['nullable', 'integer', 'exists:rural_producers,id'],
+            'rural_producer_id' => ['nullable', 'uuid', 'exists:rural_producers,id'],
             'per_page' => ['nullable', 'integer', 'min:5', 'max:100'],
         ];
     }
